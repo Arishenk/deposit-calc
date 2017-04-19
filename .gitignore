@@ -1,4 +1,3 @@
-calc
-a.out
-Makefile
-.gitignore
+bin/*
+build/src/*.o
+build/test/*.oq

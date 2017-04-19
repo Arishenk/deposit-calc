@@ -11,7 +11,7 @@ long int  percent(int srok, long int summa) {
         if (summa > 100000) dohod = summa + (summa * 8) / 100;
 	else dohod = summa + (summa * 6) / 100;
     }
-    if (srok > 242) { 
+    if (srok > 240) { 
         if (summa > 100000)
             dohod = summa + (summa * 15) / 100; 
 	else dohod = summa + (summa * 12) / 100; 
