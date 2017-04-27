@@ -3,20 +3,19 @@ MO = ./build/src/main.o
 DO = ./build/src/deposit.o
 MC = ./src/main.c
 DC = ./src/deposit.c
-MT = ./test/main_test.c
-DT = ./test/deposit_test.c
-VT = ./test/validation_test.c
-MTO = ./build/test/main_test.o
-DTO = ./build/test/deposit_test.o
-VTO = ./build/test/validation_test.o
+DH = ./src/deposit.h
+MT = ./test/main.c
+DT = ./test/deposit-test.c
+VT = ./test/validation-test.c
+MTO = ./build/test/main.o
+DTO = ./build/test/deposit-test.o
+VTO = ./build/test/validation-test.o
+.PHONY: clean all deposit-calc test
 
 all: dc test 
 
 dc: $(DO) $(MO)
 	$(CC) $(MO) $(DO) -o ./bin/deposit-calc
-
-test: $(MTO) $(DTO) $(VTO)
-	$(CC) $(MTO) $(DTO) $(VTO) -o ./bin/deposit-calc_test
 
 $(DO): $(DC)
 	$(CC) -c $(DC) -o $(DO)
@@ -24,15 +23,25 @@ $(DO): $(DC)
 $(MO): $(MC)
 	$(CC)  -c $(MC) -o $(MO)
 
-$(MTO): $(MT)
-	 $(CC) -c $(MT) -o $(MTO)
+test :
+	make bin/deposit-calc-test
+	./bin/deposit-calc-test
+	
+bin/deposit-calc-test : $(MTO) $(DTO)
+	$(CC) $(MTO) $(DTO) build/test/deposit.o -o bin/deposit-calc-test $(CFLAGS)
 
-$(DTO): $(DT)
-	 $(CC) -c $(DT) -o $(DTO)
+$(MTO) : $(DH) $(MT)
+	$(CC) -I thirdparty -c $(MT) -o $(MTO)
+	$(CC) -c $(DC) -o build/test/deposit.o  
 
-$(VTO): $(VT)
-	 $(CC) -c $(VT) -o $(VTO)
+$(DTO) : $(DH) $(DT)
+	$(CC) -c -I thirdparty $(DT) -o $(DTO) 
+
+build/test/deposit.o : $(DH) $(DC)
+	$(CC) -c $(DC) -o build/test/deposit.o 
 
 clean:
 	rm ./build/test/*.o
 	rm ./build/src/*.o
+	rm -rf bin/deposit-calc bin/deposit-calc-test
+	
