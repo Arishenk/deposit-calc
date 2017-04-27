@@ -44,4 +44,5 @@ clean:
 	rm ./build/test/*.o
 	rm ./build/src/*.o
 	rm -rf bin/deposit-calc bin/deposit-calc-test
+
 	
